@@ -31,7 +31,16 @@ pub struct Args {
   pub timings: bool,
 
   #[arg(
+    long = "skip-processing",
+    alias = "no-proc",
+    default_value_t = false,
+    help = "skips collecting and summing up the metrics outputed by 'cargo clean'"
+  )]
+  pub skip_processing: bool,
+
+  #[arg(
     short = 'D',
+    long = "max-depth",
     alias = "depth",
     help = "maximum depth for cleaning recursively"
   )]

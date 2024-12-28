@@ -24,8 +24,10 @@ fn main() -> miette::Result<()> {
 
   // process
   let process = Instant::now();
-  info!("processing");
-  process_results(results);
+  if !args.skip_processing {
+    info!("processing");
+    process_results(results);
+  }
   let process = process.elapsed();
 
   if args.timings {
