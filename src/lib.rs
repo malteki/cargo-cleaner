@@ -25,9 +25,13 @@ pub fn parse_args() -> cli::Args {
   cli::Args::parse()
 }
 
-pub fn clean(dir: PathBuf) -> Vec<FileResult> {
-  info!("walking {}", dir.display());
-  WalkDir::new(dir)
+pub fn clean(dir: PathBuf, max_depth: Option<usize>) -> Vec<FileResult> {
+  match max_depth {
+    Some(max_depth) => info!("cleaning in {} (max_depth: {max_depth})", dir.display()),
+    None => info!("cleaning in {}", dir.display()),
+  }
+
+  WalkDir::new(dir).max_depth(max_depth.unwrap_or(usize::MAX))
     .into_iter()
     .par_bridge()
     .filter_map(|r| r.ok())

@@ -10,7 +10,7 @@ fn main() -> miette::Result<()> {
   let _ = dotenvy::dotenv(); // this is optional and we dont care if it fails
   let args = parse_args();
   if let Err(err) = tracing_subscriber::fmt()
-    .with_max_level(args.log_level)
+    .with_max_level(args.log)
     .with_target(false)
     .try_init()
   {
@@ -19,7 +19,7 @@ fn main() -> miette::Result<()> {
 
   // clean
   let clean_dur = Instant::now();
-  let results = clean(args.dir);
+  let results = clean(args.dir, args.max_depth);
   let clean_dur = clean_dur.elapsed();
 
   // process
@@ -28,10 +28,12 @@ fn main() -> miette::Result<()> {
   process_results(results);
   let process = process.elapsed();
 
-  info!(
-    "finished after {:?} (clean: {clean_dur:?} + process: {process:?})",
-    start.elapsed()
-  );
+  if args.timings {
+    info!(
+      "timings:\n total: {:.3?}\n  clean: {clean_dur:.3?}\n  process: {process:.3?}",
+      start.elapsed()
+    );
+  }
 
   Ok(())
 }
