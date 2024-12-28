@@ -10,6 +10,14 @@ use regex::Regex;
 use tracing::{debug, info, trace, warn};
 use walkdir::WalkDir;
 
+mod cli;
+
+//
+
+lazy_static::lazy_static! {
+  static ref REGEX: Regex = Regex::new(r"Removed (\d+) files(?:, ([\d.]+[A-Za-z]+) total)?").expect("\"regex failed");
+}
+
 // functions
 
 pub fn clean(dir: PathBuf) -> Vec<FileResult> {
@@ -123,10 +131,6 @@ impl AddAssign for CleanOutput {
     self.files_removed += rhs.files_removed;
     self.bytes_removed += rhs.bytes_removed;
   }
-}
-
-lazy_static::lazy_static! {
-  static ref REGEX: Regex = Regex::new(r"Removed (\d+) files(?:, ([\d.]+[A-Za-z]+) total)?").expect("\"regex failed");
 }
 
 impl CleanOutput {
