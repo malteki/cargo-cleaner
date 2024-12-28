@@ -5,12 +5,25 @@ use std::{
 };
 
 use byte_unit::Byte;
+use clap::Parser;
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use regex::Regex;
 use tracing::{debug, info, trace, warn};
 use walkdir::WalkDir;
 
+pub mod cli;
+
+//
+
+lazy_static::lazy_static! {
+  static ref REGEX: Regex = Regex::new(r"Removed (\d+) files(?:, ([\d.]+[A-Za-z]+) total)?").expect("\"regex failed");
+}
+
 // functions
+
+pub fn parse_args() -> cli::Args {
+  cli::Args::parse()
+}
 
 pub fn clean(dir: PathBuf) -> Vec<FileResult> {
   info!("walking {}", dir.display());
@@ -56,7 +69,7 @@ pub fn clean(dir: PathBuf) -> Vec<FileResult> {
     .collect::<Vec<_>>()
 }
 
-pub fn analyze(collected_files: Vec<FileResult>) {
+pub fn process_results(collected_files: Vec<FileResult>) {
   let mut file_count = 0usize;
   let mut success_count = 0usize;
   let mut removed = CleanOutput {
@@ -123,10 +136,6 @@ impl AddAssign for CleanOutput {
     self.files_removed += rhs.files_removed;
     self.bytes_removed += rhs.bytes_removed;
   }
-}
-
-lazy_static::lazy_static! {
-  static ref REGEX: Regex = Regex::new(r"Removed (\d+) files(?:, ([\d.]+[A-Za-z]+) total)?").expect("\"regex failed");
 }
 
 impl CleanOutput {

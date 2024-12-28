@@ -1,18 +1,24 @@
 [package]
 name = "cargo-cleaner"
 authors = ["malteki <mki.dev@web.de>"]
+repository = "https://github.com/malteki/cargo-cleaner"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-itertools = "0.13.0"
-rayon = "1.10.0"
-tokio = { version = "1.42.0", features = ["full"] }
-walkdir = "2.5.0"
-miette = { version = "7.4", features = ["fancy"] }
-tracing = "0.1.41"
-tracing-subscriber = "0.3.19"
-dotenvy = "0.15.7"
-regex = "1.11.1"
-lazy_static = "1.5.0"
-byte-unit = "5.1.6"
+rayon = "1"
+walkdir = "2"
+miette = { version = "7", features = ["fancy"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+dotenvy = "0.15"
+regex = "1"
+lazy_static = "1"
+byte-unit = "5"
+clap = { version = "4", features = ["derive", "env"] }
+
+[profile.release]
+codegen-units = 1
+opt-level = 3
+lto = "fat"
+debug = false
