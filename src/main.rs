@@ -5,11 +5,9 @@ use tracing::info;
 
 fn main() -> miette::Result<()> {
   let start = Instant::now();
-  if let Err(err) = dotenvy::dotenv() {
-    println!("failed to load .env file ({err})")
-  };
+  let _ = dotenvy::dotenv(); // this is optional and we dont care if it fails
   tracing_subscriber::fmt::init();
-  let dir = PathBuf::from(env::var("PROJECTS_DIR").expect("$PROJECTS_DIR must be set"));
+  let dir = PathBuf::from(env::var("CARGO_CLEANER_DIR").expect("$CARGO_CLEANER_DIR must be set"));
 
   let clean_dur = Instant::now();
   let results = clean(dir);
