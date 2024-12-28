@@ -1,5 +1,6 @@
 [package]
-name = "cleaner-boi"
+name = "cargo-cleaner"
+authors = ["malteki <mki.dev@web.de>"]
 version = "0.1.0"
 edition = "2021"
 
