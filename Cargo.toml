@@ -1,6 +1,7 @@
 [package]
 name = "cargo-cleaner"
 authors = ["malteki <mki.dev@web.de>"]
+readme = "README.md"
 repository = "https://github.com/malteki/cargo-cleaner"
 version = "0.1.0"
 edition = "2021"
