@@ -1,7 +1,6 @@
 use std::time::Instant;
 
-use cargo_cleaner::{clean, parse_args, process_results};
-use comfy_table::{presets, Cell, CellAlignment};
+use cargo_cleaner::{clean, parse_args, print_timings, process_results};
 use tracing::info;
 
 fn main() -> miette::Result<()> {
@@ -36,33 +35,14 @@ fn main() -> miette::Result<()> {
 
   if args.timings {
     let total_dur = total_dur.elapsed();
-    let table = comfy_table::Table::new()
-      .set_header([
-        Cell::new("TOTAL").set_alignment(CellAlignment::Left),
-        Cell::new(format!("{:.2}ms", total_dur.as_secs_f64() * 1000.0))
-          .set_alignment(CellAlignment::Right),
-      ])
-      .add_rows(vec![
-        [
-          Cell::new("init").set_alignment(CellAlignment::Left),
-          Cell::new(format!("{:.1}ms", init_dur.as_secs_f64() * 1000.0))
-            .set_alignment(CellAlignment::Right),
-        ],
-        [
-          Cell::new("clean").set_alignment(CellAlignment::Left),
-          Cell::new(format!("{:.1}ms", clean_dur.as_secs_f64() * 1000.0))
-            .set_alignment(CellAlignment::Right),
-        ],
-        [
-          Cell::new("process").set_alignment(CellAlignment::Left),
-          Cell::new(format!("{:.1}ms", process_dur.as_secs_f64() * 1000.0))
-            .set_alignment(CellAlignment::Right),
-        ],
-      ])
-      .load_preset(presets::NOTHING)
-      .to_string();
-
-    info!("\n{table}");
+    print_timings(
+      ("TOTAL", total_dur),
+      &[
+        ("init", init_dur),
+        ("clean", clean_dur),
+        ("process", process_dur),
+      ],
+    );
   }
 
   Ok(())

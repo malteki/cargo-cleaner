@@ -2,10 +2,12 @@ use std::{
   ops::AddAssign,
   path::PathBuf,
   process::{Command, ExitStatus},
+  time::Duration,
 };
 
 use byte_unit::Byte;
 use clap::Parser;
+use comfy_table::{Cell, CellAlignment};
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use regex::Regex;
 use tracing::{debug, info, trace, warn};
@@ -125,6 +127,26 @@ pub fn process_results(collected_files: Vec<FileResult>) {
     Byte::from_u64(removed.bytes_removed).get_appropriate_unit(byte_unit::UnitType::Decimal);
 
   info!("removed {} files ({adjusted:.3})", removed.files_removed);
+}
+
+pub fn print_timings(total: (&str, Duration), data: &[(&str, Duration)]) {
+  let table = comfy_table::Table::new()
+    .set_header([
+      Cell::new(total.0).set_alignment(CellAlignment::Left),
+      Cell::new(format!("{:.1}ms", total.1.as_secs_f64() * 1000.0))
+        .set_alignment(CellAlignment::Right),
+    ])
+    .add_rows(data.into_iter().map(|(name, dur)| {
+      [
+        Cell::new(name).set_alignment(CellAlignment::Left),
+        Cell::new(format!("{:.1}ms", dur.as_secs_f64() * 1000.0))
+          .set_alignment(CellAlignment::Right),
+      ]
+    }))
+    .load_preset("     --            ")
+    .to_string();
+
+  info!("timing data:\n{table}");
 }
 
 //
