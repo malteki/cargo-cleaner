@@ -69,7 +69,7 @@ pub fn clean(dir: PathBuf) -> Vec<FileResult> {
     .collect::<Vec<_>>()
 }
 
-pub fn analyze(collected_files: Vec<FileResult>) {
+pub fn process_results(collected_files: Vec<FileResult>) {
   let mut file_count = 0usize;
   let mut success_count = 0usize;
   let mut removed = CleanOutput {

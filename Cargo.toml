@@ -15,4 +15,10 @@ dotenvy = "0.15"
 regex = "1"
 lazy_static = "1"
 byte-unit = "5"
-clap = { version = "4.5.23", features = ["derive", "env"] }
+clap = { version = "4", features = ["derive", "env"] }
+
+[profile.release]
+codegen-units = 1
+opt-level = 3
+lto = "fat"
+debug = false
