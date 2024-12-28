@@ -5,12 +5,13 @@ use std::{
 };
 
 use byte_unit::Byte;
+use clap::Parser;
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use regex::Regex;
 use tracing::{debug, info, trace, warn};
 use walkdir::WalkDir;
 
-mod cli;
+pub mod cli;
 
 //
 
@@ -19,6 +20,10 @@ lazy_static::lazy_static! {
 }
 
 // functions
+
+pub fn parse_args() -> cli::Args {
+  cli::Args::parse()
+}
 
 pub fn clean(dir: PathBuf) -> Vec<FileResult> {
   info!("walking {}", dir.display());
