@@ -1,1 +1,1 @@
-cargo install --path .
+cargo install --profile release --bins --path .

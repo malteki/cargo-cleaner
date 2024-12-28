@@ -14,12 +14,35 @@ pub struct Args {
     help = "the directory to start cleaning in"
   )]
   pub dir: PathBuf,
+
   #[arg(
     short = 'l',
-    alias = "log",
     env = "RUST_LOG",
     default_value = "info",
     help = "level of verbosity (for tracing)"
   )]
-  pub log_level: Level,
+  pub log: Level,
+
+  #[arg(
+    short = 't',
+    default_value_t = false,
+    help = "output timing data, requires log=info (or higher)"
+  )]
+  pub timings: bool,
+
+  #[arg(
+    long = "skip-processing",
+    alias = "no-proc",
+    default_value_t = false,
+    help = "skips collecting and summing up the metrics outputed by 'cargo clean'"
+  )]
+  pub skip_processing: bool,
+
+  #[arg(
+    short = 'D',
+    long = "max-depth",
+    alias = "depth",
+    help = "maximum depth for cleaning recursively"
+  )]
+  pub max_depth: Option<usize>,
 }
