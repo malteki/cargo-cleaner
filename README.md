@@ -1,5 +1,5 @@
 # cargo-cleaner
-a simple cli to clean all packages recursively
+a simple cli-tool to clean all packages recursively
 ## how to install
 `cargo install --git https://github.com/malteki/cargo-cleaner.git` (assuming you already have cargo installed)
 ## how to use
