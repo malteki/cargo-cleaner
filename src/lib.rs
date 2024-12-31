@@ -55,7 +55,7 @@ pub fn clean(dir: PathBuf, max_depth: Option<usize>) -> Vec<FileResult> {
               "cleaned \"{}\" | stdout: {stdout:?} | stderr: {stderr:?} | exit-status: {exit_status}",
               file.path().display(),
             );
-            Some(FileResult::Ok { manifest_path: file.path().to_path_buf() , stdout: out.stdout, stderr: out.stderr, exit_status })
+            Some(FileResult::Ok { manifest_path: file.path().to_path_buf() ,  stderr: out.stderr, exit_status })
           }
           Err(err) => {
             warn!(
@@ -94,7 +94,7 @@ pub fn process_results(collected_files: Vec<FileResult>) {
       }
       FileResult::Ok {
         manifest_path,
-        stdout: _,
+        // stdout: _,
         stderr,
         exit_status,
       } => {
@@ -182,7 +182,6 @@ impl CleanOutput {
   }
 }
 
-#[allow(unused)]
 #[derive(Debug)]
 pub enum FileResult {
   CmdErr {
@@ -191,7 +190,7 @@ pub enum FileResult {
   },
   Ok {
     manifest_path: PathBuf,
-    stdout: Vec<u8>,
+    // stdout: Vec<u8>,
     stderr: Vec<u8>,
     exit_status: ExitStatus,
   },
